@@ -12,7 +12,7 @@ import './App.css'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-const API_URL = "http://127.0.0.1:8000"
+const API_URL = "https://market-gap-api.onrender.com"
 
 function App() {
   const [selectedPos, setSelectedPos] = useState(null)
