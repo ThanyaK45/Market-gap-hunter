@@ -1,0 +1,450 @@
+/* Reset */
+#root {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 350px;
+  background: #f8f9fa;
+  padding: 20px;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.sidebar h1 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.control-group {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  color: #2c3e50;
+}
+
+select, input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background: white;
+  color: #2c3e50;
+  box-sizing: border-box;
+}
+
+.instruction {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0 0 5px 0;
+}
+
+.coord-box {
+  background: #e9ecef;
+  padding: 10px;
+  border-radius: 5px;
+  font-family: monospace;
+  text-align: center;
+  color: #2c3e50;
+}
+.coord-box.waiting { color: #888; font-style: italic; }
+
+.analyze-btn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 15px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.analyze-btn:hover { background: #2980b9; }
+.analyze-btn:disabled { background: #bdc3c7; cursor: not-allowed; }
+
+/* Result Card */
+.result-card {
+  margin-top: 20px;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  border: 1px solid #eee;
+}
+
+.score-box {
+  border-left: 5px solid #ccc;
+  padding-left: 10px;
+  margin-bottom: 10px;
+}
+
+.score-label {
+  display: block;
+  color: #000000;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.score-val {
+  display: block;
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 0 0 1px rgba(0,0,0,0.1);
+}
+
+.verdict {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.stats p {
+  margin: 5px 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Map Styling */
+.map-wrapper {
+  flex-grow: 1;
+  height: 100%;
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Search Box Styles - ลบออกเพราะใช้ style ร่วมกับ select แล้ว */
+
+/* Growth Box */
+.growth-box {
+  background: #f0f9ff;
+  border: 1px dashed #3498db;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  text-align: center;
+  color: #2980b9;
+}
+
+.growth-box small {
+  display: block;
+  font-size: 0.8rem;
+  margin-top: 2px;
+}
+
+/* Chart Container */
+.chart-container {
+  margin: 15px 0;
+  padding: 10px;
+  background: #fff;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.chart-container h4 {
+  margin: 0 0 10px 0;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.stat-item {
+  background: #eee;
+  padding: 5px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* AI Result Box */
+.ai-result-box {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-left: 4px solid #8e44ad;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #2c3e50;
+}
+
+.ai-result-box p {
+  margin: 10px 0;
+  color: #2c3e50;
+  line-height: 1.8;
+}
+
+.ai-result-box strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.ai-result-box br {
+  display: block;
+  content: "";
+  margin: 8px 0;
+}
+
+.ai-result-box > *:first-child {
+  margin-top: 0;
+}
+
+.ai-result-box > *:last-child {
+  margin-bottom: 0;
+}
+
+/* AI Button */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.ai-btn {
+  width: 100%;
+  padding: 10px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+  background: #8e44ad;
+}
+
+.ai-btn:hover {
+  background: #732d91;
+}
+
+.ai-btn:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+}
+
+/* Radius Slider */
+.radius-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 5px;
+  background: #ddd;
+  outline: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.radius-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3498db;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.radius-slider::-webkit-slider-thumb:hover {
+  background: #2980b9;
+  transform: scale(1.1);
+}
+
+.radius-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3498db;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+}
+
+.radius-slider::-moz-range-thumb:hover {
+  background: #2980b9;
+  transform: scale(1.1);
+}
+
+.radius-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 5px;
+}
+
+.search-container {
+  position: relative;
+  z-index: 2000; /* ต้องสูงกว่า Map */
+}
+
+/* Suggestion List (Dropdown) */
+.suggestion-list {
+  position: absolute;
+  top: 100%; /* อยู่ใต้ Input พอดี */
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0 0 5px 5px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.suggestion-list li {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #2c3e50;
+  background: white;
+  transition: background 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestion-list li:hover {
+  background: #f1f8ff;
+  color: #3498db;
+}
+
+.suggestion-list li:last-child {
+  border-bottom: none;
+}
+
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 15px;
+  }
+  
+  .sidebar h1 {
+    font-size: 1.2rem;
+  }
+  
+  .map-wrapper {
+    height: 50vh;
+  }
+  
+  .control-group {
+    margin-bottom: 15px;
+  }
+  
+  .analyze-btn {
+    padding: 12px;
+    font-size: 1rem;
+  }
+  
+  .result-card {
+    margin-top: 15px;
+    padding: 12px;
+  }
+  
+  .score-val {
+    font-size: 1.5rem;
+  }
+  
+  .score-label {
+    color: #000000;
+  }
+
+  .chart-container {
+    margin: 10px 0;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    padding: 10px;
+  }
+  
+  .sidebar h1 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
+  select, input[type="text"] {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+  
+  .analyze-btn {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+  
+  .score-val {
+    font-size: 1.3rem;
+  }
+  
+  .ai-result-box {
+    font-size: 0.85rem;
+    padding: 12px;
+  }
+  
+  label {
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet Landscape */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 300px;
+  }
+  
+  .sidebar h1 {
+    font-size: 1.3rem;
+  }
+}
