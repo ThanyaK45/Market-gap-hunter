@@ -12,7 +12,6 @@ from pydantic import BaseModel, validator
 from typing import List, Dict
 from dotenv import load_dotenv
 from cache_manager import CacheManager
-from history_manager import HistoryManager
 
 try:
     import google.genai as genai
@@ -29,9 +28,6 @@ app = FastAPI(title="Market Gap Hunter API V2")
 
 # Initialize Cache Manager
 cache = CacheManager(cache_dir="cache", ttl_hours=24)
-
-# Initialize History Manager
-history = HistoryManager(history_file="analysis_history.json")
 
 # Security: Load API Key from environment
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
@@ -115,6 +111,9 @@ class AIRequest(BaseModel):
 # --- 4. HELPER FUNCTIONS ---
 def create_ai_prompt(data: AIRequest) -> str:
     """สร้าง prompt สำหรับ AI"""
+    # รายชื่อธุรกิจที่ระบบรองรับ
+    available_businesses = "Cafe, Restaurant, Bar/Pub, Convenience Store, Pharmacy, Gym/Fitness, Coworking Space"
+    
     return f"""คุณคือผู้เชี่ยวชาญด้านการวางแผนกลยุทธ์ธุรกิจและการเลือกทำเลที่ตั้ง (Business Consultant)
 กรุณาวิเคราะห์ศักยภาพของทำเลนี้สำหรับการเปิด "{data.business_type}" โดยอ้างอิงจากข้อมูลสถิติดังนี้:
 
@@ -132,7 +131,12 @@ def create_ai_prompt(data: AIRequest) -> str:
 
 ⚠️ **ความเสี่ยงที่ต้องระวัง:** (1 ข้อ)
 
-💡 **กลยุทธ์แนะนำ:** (แนะนำ 1 กลยุทธ์การตลาด หรือ รูปแบบร้านที่เหมาะกับลูกค้ากลุ่มนี้)
+💡 **กลยุทธ์แนะนำ:** 
+ให้แนะนำ 1 กลยุทธ์การตลาดที่เหมาะสม 
+
+แต่ถ้าหากวิเคราะห์สถิติแล้วพบว่าทำเลนี้ "ไม่เหมาะสม" หรือมีความเสี่ยงสูงเกินไปสำหรับ "{data.business_type}" 
+ให้แนะนำผู้ใช้งานเปลี่ยนไปทำธุรกิจอื่นแทน โดยต้องเลือกแนะนำจากรายชื่อธุรกิจเหล่านี้เท่านั้น: [{available_businesses}]
+พร้อมบอกเหตุผลสั้นๆ ว่าทำไมธุรกิจใหม่ถึงเหมาะกว่า
 
 สำคัญ: ใส่บรรทัดว่างระหว่างแต่ละหัวข้อ และใช้ ** สำหรับหัวข้อ"""
 
@@ -166,27 +170,6 @@ def clear_cache(expired_only: bool = True):
     else:
         cleared = cache.clear_all()
         return {"message": f"Cleared all {cleared} cache files"}
-
-@app.get("/history")
-def get_history(limit: int = 10, business_type: str = None):
-    """Get analysis history"""
-    return history.get_history(limit=limit, business_type=business_type)
-
-@app.get("/history/location")
-def get_location_history(lat: float, lon: float, tolerance: float = 0.01):
-    """Get history for specific location"""
-    return history.get_location_history(lat=lat, lon=lon, tolerance=tolerance)
-
-@app.get("/history/stats")
-def get_history_stats():
-    """Get history statistics"""
-    return history.get_statistics()
-
-@app.delete("/history")
-def clear_history():
-    """Clear all history"""
-    cleared = history.clear_history()
-    return {"message": f"Cleared {cleared} history entries"}
 
 @app.get("/search")
 @limiter.limit("20/minute")
@@ -463,15 +446,6 @@ async def analyze_market(request: Request, req: AnalyzeRequest):
     
     # Save to cache before returning
     cache.set(result, **cache_key_params)
-    
-    # Save to history
-    history.add_analysis(
-        lat=req.lat,
-        lon=req.lon,
-        business_type=req.business_type,
-        radius=req.radius,
-        result=result
-    )
     
     return result
 

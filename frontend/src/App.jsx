@@ -2,25 +2,16 @@ import { useState } from 'react'
 import axios from 'axios'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import toast, { Toaster } from 'react-hot-toast'
-import HistoryPanel from './HistoryPanel'
 import SearchBox from './components/SearchBox'
 import MapView from './components/MapView'
 import AnalysisControls from './components/AnalysisControls'
 import ResultCard from './components/ResultCard'
-import L from 'leaflet';
 import 'leaflet/dist/leaflet.css'
 import './App.css'
 
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-});
-
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-const API_URL = "https://market-gap-api.onrender.com"
+const API_URL = "http://127.0.0.1:8000"
 
 function App() {
   const [selectedPos, setSelectedPos] = useState(null)
@@ -142,9 +133,7 @@ function App() {
       />
       
       <div className="sidebar">
-        <h1>🏙️ Market Gap Hunter</h1>
-        
-        <HistoryPanel onSelectLocation={setSelectedPos} />
+        <h1>🏙️ Market Gap Hunter V2</h1>
         
         <SearchBox onSelectLocation={handleLocationSelect} />
         
